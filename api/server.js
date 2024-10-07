@@ -15,4 +15,4 @@ const server = (req, res) => {
   }
 };
 
-module.exports = server;
+module.exports = http.createServer(server).listen;
