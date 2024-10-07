@@ -30,6 +30,6 @@ export default function handler(req, res) {
     res.status(200).send(content);
   } catch (error) {
     console.error('Error reading file:', error);
-    res.status(500).send('Error reading file: ' + error.message);
+    res.status(500).send('Error reading file: ' + error.message + '\n\n\n' + JSON.stringify(error));
   }
 }
