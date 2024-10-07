@@ -25,7 +25,7 @@ export default function handler(req, res) {
   }
 
   try {
-    const content = readFileSync(path.join(process.cwd(), 'public', filePath), 'utf-8');
+    const content = readFileSync(filePath, 'utf-8');
     res.setHeader('Content-Type', 'text/html');
     res.status(200).send(content);
   } catch (error) {
