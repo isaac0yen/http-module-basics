@@ -1,18 +1,34 @@
-const http = require('http');
-const fs = require('fs');
+// api/server.js
 
-const server = (req, res) => {
-  if (req.url == '/dashboard') {
-    res.end(fs.readFileSync('./dashboard.html'));
-  } else if (req.url == '/settings') {
-    res.end(fs.readFileSync('./settings.html'));
-  } else if (req.url == '/') {
-    res.end(fs.readFileSync('./home.html'));
-  } else if (req.url == '/user') {
-    res.end(fs.readFileSync('./user.html'));
-  } else {
-    res.end(fs.readFileSync('./404.html'))
+import { readFileSync } from 'fs';
+import path from 'path';
+
+export default function handler(req, res) {
+  const { url } = req;
+  let filePath;
+
+  switch (url) {
+    case '/dashboard':
+      filePath = './dashboard.html';
+      break;
+    case '/settings':
+      filePath = './settings.html';
+      break;
+    case '/':
+      filePath = './home.html';
+      break;
+    case '/user':
+      filePath = './user.html';
+      break;
+    default:
+      filePath = './404.html';
   }
-};
 
-module.exports = http.createServer(server).listen;
+  try {
+    const content = readFileSync(path.join(process.cwd(), filePath), 'utf-8');
+    res.setHeader('Content-Type', 'text/html');
+    res.status(200).send(content);
+  } catch (error) {
+    res.status(500).send('Error reading file');
+  }
+}
